@@ -2,6 +2,7 @@ package com.app.organizacao.teste.entity;
 
 import com.app.organizacao.teste.entity.enums.TipoPessoa;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,9 +12,12 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Repository
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "pessoa")
 public class Pessoa implements Serializable {
 
+    private static final long serialVersion =1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpessoa")
