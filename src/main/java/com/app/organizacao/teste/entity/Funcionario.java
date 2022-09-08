@@ -1,27 +1,29 @@
 package com.app.organizacao.teste.entity;
 
+import com.app.organizacao.teste.entity.enums.TipoFuncionario;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name="funcionario")
+@Table(name = "funcionario")
 @PrimaryKeyJoinColumn(name = "idfuncionario", referencedColumnName = "idpessoa")
-public class Funcionario extends Pessoa{
+public class Funcionario extends Pessoa {
 
-    private static final long serialVersion =1L;
+    private static final long serialVersion = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpessoa")
     private Long id;
 
-    @Column(name="cargo")
-    private String cargo;
+    @Column(name = "tipofuncionario")
+    private TipoFuncionario tipofuncionario;
 
     @Column(name = "salario")
     private Double salario;
 
-    @Column(name="setor")
+    @Column(name = "setor")
     private String setor;
 
     public Funcionario() {
@@ -37,12 +39,12 @@ public class Funcionario extends Pessoa{
         this.id = id;
     }
 
-    public String getCargo() {
-        return cargo;
+    public TipoFuncionario getTipofuncionario() {
+        return tipofuncionario;
     }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
+    public void setTipofuncionario(TipoFuncionario tipofuncionario) {
+        this.tipofuncionario = tipofuncionario;
     }
 
     public Double getSalario() {
