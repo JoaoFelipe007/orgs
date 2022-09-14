@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface VendedorRepository extends JpaRepository<Vendedor,Long> {
-    @Query(value = "select * from funcionario where idfuncionario = ?1",nativeQuery = true)
+    @Query(value = "select * from vendedor where idvendedor = ?1",nativeQuery = true)
     Vendedor findByFuncionario(Long id);
 
     @Query("select f from Vendedor f where f.id=?1 and f.ativo = true")
