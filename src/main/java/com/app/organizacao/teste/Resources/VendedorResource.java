@@ -1,8 +1,7 @@
 package com.app.organizacao.teste.Resources;
 
-import com.app.organizacao.teste.entity.Funcionario;
-import com.app.organizacao.teste.entity.Pessoa;
-import com.app.organizacao.teste.service.FuncionarioService;
+import com.app.organizacao.teste.entity.Vendedor;
+import com.app.organizacao.teste.service.VendedorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,35 +12,35 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api")
 @Api(value = "Api Rest Produto")// Nome da Api
 @CrossOrigin("*") // Aqui vc pode restringir um a dominio ou a qualquer dominio
-public class FuncionarioResource {
+public class VendedorResource {
 
     @Autowired
-    private FuncionarioService service;
+    private VendedorService service;
 
     @ApiOperation("End point salva pessoa")
-    @PostMapping("/pessoa")
-    public ResponseEntity<Object> salvar(@RequestBody Funcionario funcionario) {
-        return service.salvar(funcionario);
+    @PostMapping("/vendedor")
+    public ResponseEntity<Object> salvar(@RequestBody Vendedor vendedor) {
+        return service.salvar(vendedor);
     }
 
     @ApiOperation("End point lista as pessoas")
-    @GetMapping(value = "/pessoa")
+    @GetMapping(value = "/vendedor")
     public ResponseEntity<Object> listarTodos(){
         return service.listarTodos();
     }
 
     @ApiOperation("End point edita pessoa")
-    @PutMapping ("/funcionario")
-    public ResponseEntity<Object> editar (@RequestBody Funcionario funcionario) {
-        return service.editar(funcionario);
+    @PutMapping ("/vendedor")
+    public ResponseEntity<Object> editar (@RequestBody Vendedor vendedor) {
+        return service.editar(vendedor);
     }
     @ApiOperation("End point deleta pessoa")
-    @DeleteMapping("/funcionario/{id}")
+    @DeleteMapping("/vendedor/{id}")
     public ResponseEntity<Object> exluir (@PathVariable(name = "id", required = true)Long id) {
         return service.excluir(id);
     }
     @ApiOperation("End point deleta pessoa")
-    @GetMapping("/funcionario-ativos/{id}")
+    @GetMapping("/vendedor-ativos/{id}")
     public ResponseEntity<Object> listarAtivos(@PathVariable(name = "id", required = true)Long id) {
         return service.listarAtivos(id);
     }
