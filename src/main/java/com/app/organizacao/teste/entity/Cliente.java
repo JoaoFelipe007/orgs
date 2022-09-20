@@ -13,5 +13,14 @@ public class Cliente {
     @Column(name = "idcliente")
     private Long id;
 
-    @JoinColumn()
+    @ManyToOne
+    @JoinColumn(name = "idvendedor", referencedColumnName = "idvendedor")
+    private Vendedor vendedor;
+
+    @ManyToOne
+    @JoinColumn(name = "idrota", referencedColumnName = "idrota")
+    private Rota rota;
+
+
+
 }
