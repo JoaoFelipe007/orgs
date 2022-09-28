@@ -3,13 +3,12 @@ package com.app.organizacao.teste.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="rota")
+@Table(name = "rota")
 public class Rota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idrota")
     private Long id;
-
 
 
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente")
@@ -19,13 +18,16 @@ public class Rota {
     @Column(name = "cep")
     private String cep;
 
+    @Column(name = "cidade")
+    private String cidade;
+
     @Column(name = "rua")
     private String rua;
 
     @Column(name = "bairro")
     private String bairro;
 
-    @Column(name="numerocasa")
+    @Column(name = "numerocasa")
     private Integer numeroCasa;
 
     @Column(name = "diasemanaentrega")
@@ -88,5 +90,13 @@ public class Rota {
 
     public void setDiaSemanaEntrega(Integer diaSemanaEntrega) {
         this.diaSemanaEntrega = diaSemanaEntrega;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 }

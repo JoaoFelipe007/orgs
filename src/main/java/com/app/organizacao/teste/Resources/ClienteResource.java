@@ -23,4 +23,22 @@ public class ClienteResource {
     public ResponseEntity<Object> salvar(@RequestBody Cliente cliente) {
         return service.salvar(cliente);
     }
+
+    @ApiOperation("Edita um cliente")
+    @PutMapping("/cliente")
+    public ResponseEntity<Object> editar(@RequestBody Cliente cliente) {
+        return service.editar(cliente);
+    }
+
+    @ApiOperation("Recurso lista cliente pelo id")
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity<Object> listaPorId(@PathVariable(name = "id",required = true) Long id){
+        return service.listarPorId(id);
+    }
+
+    @ApiOperation("Recurso lista todas as rotas")
+    @GetMapping("/cliente")
+    public ResponseEntity<Object> listaTodas(){
+        return service.listarTodaOsClientes();
+    }
 }

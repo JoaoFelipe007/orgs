@@ -36,15 +36,17 @@ public class ClienteService {
                     messages.add("id não foi encontrado");
                 }
             }
+
+            if (c.getRota() == null) {
+                messages.add("O id da rota não pode ser nulo");
+            } else {
+                Optional<Rota> r = rotaRepository.findById(c.getRota().getId());
+                if (!r.isPresent()) {
+                    messages.add("O id dessa rota não foi encontrada não foi encontrada");
+                }
+            }
         }
-//        if (c.getRota() == null) {
-//            messages.add("O id da rota não pode ser nulo");
-//        } else {
-//            Optional<Rota> r = rotaRepository.findById(c.getRota().getId());
-//            if (!r.isPresent()) {
-//                messages.add("O id dessa rota não foi encontrada não foi encontrada");
-//            }
-//        }
+
         if (c.getVendedor() == null) {
             messages.add("O id do vendedor não pode estar vazio");
         } else {
@@ -63,7 +65,7 @@ public class ClienteService {
             if (verify(messages, cliente, false)) {
                 Cliente result = repository.saveAndFlush(cliente);
 
-                return  ResponseEntity.status(200).body(ResponseUtil.response("Clientee cadastrado!", result));
+                return ResponseEntity.status(200).body(ResponseUtil.response("Cliente cadastrado!", result));
             }
             return ResponseEntity.status(404).body(ResponseUtil.response(messages, null));
 
@@ -77,12 +79,35 @@ public class ClienteService {
         try {
             if (verify(messages, cliente, true)) {
                 Cliente result = repository.saveAndFlush(cliente);
-                return result != null ? ResponseEntity.ok().body(cliente)
-                        : (ResponseEntity<Object>) ResponseEntity.badRequest();
+                return ResponseEntity.status(200).body(ResponseUtil.response(messages, cliente));
             }
+            return ResponseEntity.status(400).body(ResponseUtil.response(messages, null));
         } catch (Exception e) {
             return (ResponseEntity<Object>) ResponseEntity.internalServerError();
         }
-        return null;
     }
+
+    public ResponseEntity<Object> listarPorId(Long id) {
+        try {
+            Optional<Cliente> find = repository.findById(id);
+            if (find.isPresent()) {
+                return ResponseEntity.status(200).body(ResponseUtil.response("Listado com sucesso", find.get()));
+            }
+            return ResponseEntity.status(404).body(ResponseUtil.response("O id passado não foi encontrado", null));
+
+        } catch (Exception e) {
+            return (ResponseEntity<Object>) ResponseEntity.internalServerError();
+        }
+    }
+    public ResponseEntity<Object> listarTodaOsClientes() {
+        try {
+            List<Cliente> result = repository.findAll();
+            return result != null ? ResponseEntity.status(200).body(ResponseUtil.response("Listagem realizada com sucesso", result))
+                    : ResponseEntity.status(400).body("Não foi possivel realizar a listagem");
+        } catch (Exception e) {
+            return (ResponseEntity<Object>) ResponseEntity.internalServerError();
+
+        }
+    }
+
 }
