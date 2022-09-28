@@ -10,7 +10,10 @@ public class Rota {
     @Column(name = "idrota")
     private Long id;
 
-    @Column(name = "idcliente")
+
+
+    @JoinColumn(name = "idcliente", referencedColumnName = "idcliente")
+    @ManyToOne
     private Cliente cliente;
 
     @Column(name = "cep")

@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cliente")
 @PrimaryKeyJoinColumn(name = "idcliente", referencedColumnName = "idpessoa")
-public class Cliente {
+public class Cliente extends Pessoa{
     private static final long serialVersion = 1L;
 
     @Id
