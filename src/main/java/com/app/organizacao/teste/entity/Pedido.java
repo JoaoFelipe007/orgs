@@ -1,5 +1,6 @@
 package com.app.organizacao.teste.entity;
 
+import com.app.organizacao.teste.entity.enums.TipoPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
@@ -51,7 +52,7 @@ public class Pedido {
     private Date diaPagamentoEfetuado;
 
     @Column(name = "tipopagamento")
-    private Integer tipoPagamento;
+    private TipoPagamento tipoPagamento;
 
     @Column(name = "totalparcelas")
     private Integer totalParcelas;
@@ -156,11 +157,11 @@ public class Pedido {
         this.diaPagamentoEfetuado = diaPagamentoEfetuado;
     }
 
-    public Integer getTipoPagamento() {
+    public TipoPagamento getTipoPagamento() {
         return tipoPagamento;
     }
 
-    public void setTipoPagamento(Integer tipoPagamento) {
+    public void setTipoPagamento(TipoPagamento tipoPagamento) {
         this.tipoPagamento = tipoPagamento;
     }
 
