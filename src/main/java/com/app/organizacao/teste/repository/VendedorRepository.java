@@ -12,6 +12,6 @@ public interface VendedorRepository extends JpaRepository<Vendedor,Long> {
     @Query(value = "select * from vendedor where idvendedor = ?1",nativeQuery = true)
     Vendedor findByFuncionario(Long id);
 
-    @Query("select f from Vendedor f where f.id=?1 and f.ativo = true")
-    List<Vendedor> listaSeForAtivo(Long id);
+    @Query("select f from Vendedor f where f.ativo = true")
+    List<Vendedor> listaSeForAtivo();
 }

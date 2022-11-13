@@ -13,6 +13,6 @@ public interface FinanceiroRepository extends JpaRepository<Financeiro,Long> {
     @Query(value = "select * from financeiro where idfinanceiro = ?1",nativeQuery = true)
     Financeiro listByFinanceiroId(Long id);
 
-    @Query("select f from Financeiro f where f.id=?1 and f.ativo = true")
-    List<Financeiro> listaSeForAtivo(Long id);
+    @Query("select f from Financeiro f where f.ativo = true")
+    List<Financeiro> listaSeForAtivo();
 }

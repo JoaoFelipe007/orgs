@@ -17,32 +17,32 @@ public class VendedorResource {
     @Autowired
     private VendedorService service;
 
-    @ApiOperation("End point salva pessoa")
+    @ApiOperation("End point cadastra um vendedor")
     @PostMapping("/vendedor")
     public ResponseEntity<Object> salvar(@RequestBody Vendedor vendedor) {
         return service.salvar(vendedor);
     }
 
-    @ApiOperation("End point lista as pessoas")
+    @ApiOperation("End point lista todos os vendodores")
     @GetMapping(value = "/vendedor")
     public ResponseEntity<Object> listarTodos(){
         return service.listarTodos();
     }
 
-    @ApiOperation("End point edita pessoa")
+    @ApiOperation("End point edita vendedor")
     @PutMapping ("/vendedor")
     public ResponseEntity<Object> editar (@RequestBody Vendedor vendedor) {
         return service.editar(vendedor);
     }
-    @ApiOperation("End point deleta pessoa")
+    @ApiOperation("End point deleta vendedor")
     @DeleteMapping("/vendedor/{id}")
     public ResponseEntity<Object> exluir (@PathVariable(name = "id", required = true)Long id) {
         return service.excluir(id);
     }
-    @ApiOperation("End point deleta pessoa")
-    @GetMapping("/vendedor-ativos/{id}")
-    public ResponseEntity<Object> listarAtivos(@PathVariable(name = "id", required = true)Long id) {
-        return service.listarAtivos(id);
+    @ApiOperation("End point lista os vendedores ativos")
+    @GetMapping("/vendedor-ativos/")
+    public ResponseEntity<Object> listarAtivos() {
+        return service.listarAtivos();
     }
 
 

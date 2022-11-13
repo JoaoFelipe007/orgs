@@ -1,9 +1,11 @@
 package com.app.organizacao.teste.service;
 
 import com.app.organizacao.teste.entity.Financeiro;
-import com.app.organizacao.teste.entity.Logistica;
 import com.app.organizacao.teste.entity.Pessoa;
+import com.app.organizacao.teste.entity.Vendedor;
 import com.app.organizacao.teste.repository.FinanceiroRepository;
+import com.app.organizacao.teste.service.util.ResponseUtil;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,39 +15,64 @@ import java.util.Optional;
 
 @Service
 public class FinanceiroService {
+
     @Autowired
     private FinanceiroRepository repository;
 
+    private boolean verify(List<String> messages, Financeiro finan, Boolean isUpdate) {
+        if (isUpdate) {
+            if (finan.getId() == null) {
+                messages.add("O id do vendedor não pode ser nulo");
+            } else {
+                Optional<Financeiro> find = repository.findById(finan.getId());
+                if (!find.isPresent()) {
+                    messages.add("id não foi encontrado");
+                }
+            }
+
+        }
+        if (finan.getCpf() == null) {
+            messages.add("O cpf precisar sem passado");
+        }
+        if (finan.getDataNascimento() == null) {
+            messages.add("A data de nascimento precisa ser passada");
+        }
+        return messages.isEmpty();
+    }
 
     public ResponseEntity<Object> salvar(Financeiro financeiro) {
+        List<String> messages = new ArrayList<>();
         try {
-            Pessoa p = repository.saveAndFlush(financeiro);
-            return p != null ? ResponseEntity.ok().body(financeiro)
-                    : (ResponseEntity<Object>) ResponseEntity.badRequest();
+            if (verify(messages, financeiro, false)) {
+                Pessoa p = repository.saveAndFlush(financeiro);
+                return ResponseEntity.status(200).body(ResponseUtil.response("Funcionario da Parte do financeiro salvo com sucesso", p));
+            }
+            return ResponseEntity.status(404).body(ResponseUtil.response(messages, null));
         } catch (Exception e) {
-            return (ResponseEntity<Object>) ResponseEntity.internalServerError();
+            return ResponseEntity.status(500).body(e);
         }
     }
 
     public ResponseEntity<Object> listarTodos() {
         try {
             List<Financeiro> result = repository.findAll();
-            return ResponseEntity.ok().body(result);
+            return !result.isEmpty()? ResponseEntity.status(200).body(ResponseUtil.response("Funcionarios do Funcionario Listados com sucesso", result)):
+                    ResponseEntity.status(404).body(ResponseUtil.response("Não foi encontrado nenhum funcionario do financeiro",null));
         } catch (Exception e) {
-            return (ResponseEntity<Object>) ResponseEntity.internalServerError();
+            return ResponseEntity.status(500).body(e);
         }
     }
 
     public ResponseEntity<Object> editar(Financeiro financeiro) {
+        List<String> messages = new ArrayList<>();
         try {
-            Optional<Financeiro> optional = repository.findById(financeiro.getId());
-            if (optional.isPresent()) {
+            if (verify(messages, financeiro, true)) {
                 Pessoa result = repository.saveAndFlush(financeiro);
-                return ResponseEntity.ok().body(financeiro);
+                return ResponseEntity.status(200).body(ResponseUtil.response("Funcionario da Parte do financeiro salvo com sucesso", result));
             }
-            return (ResponseEntity<Object>) ResponseEntity.badRequest();
+            return ResponseEntity.status(404).body(ResponseUtil.response(messages, null));
         } catch (Exception e) {
-            return (ResponseEntity<Object>) ResponseEntity.internalServerError();
+            return ResponseEntity.status(500).body(e);
         }
     }
 
@@ -54,23 +81,21 @@ public class FinanceiroService {
             Optional<Financeiro> optional = repository.findById(id);
             if (optional.isPresent()) {
                 repository.deleteById(optional.get().getId());
-                return ResponseEntity.ok().body("excluido ocm sucesso");
+                return ResponseEntity.status(200).body("excluido ocm sucesso");
             }
-            return ResponseEntity.badRequest().body("Id não encontrado");
+            return ResponseEntity.status(404).body("Id não encontrado para realizar o processo");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e);
+            return ResponseEntity.status(500).body(e);
         }
     }
 
-    public ResponseEntity<Object> listarAtivos(Long id) {
+    public ResponseEntity<Object> listarAtivos() {
         try {
-            List<Financeiro> result = repository.listaSeForAtivo(id);
-            if (!result.isEmpty()) {
-                return ResponseEntity.ok().body(result);
-            }
-            return ResponseEntity.badRequest().body("Esse funcionario não está ativo");
+            List<Financeiro> result = repository.listaSeForAtivo();
+                return !result.isEmpty()? ResponseEntity.status(200).body(ResponseUtil.response("Listado com Sucesso", result)):
+                ResponseEntity.status(404).body(ResponseUtil.response("No momento não tem funcionarios ativos para a listagem", null));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e);
+            return ResponseEntity.status(500).body(e);
 
         }
     }

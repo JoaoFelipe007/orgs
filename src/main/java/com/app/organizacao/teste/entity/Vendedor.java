@@ -3,6 +3,7 @@ package com.app.organizacao.teste.entity;
 import com.app.organizacao.teste.entity.enums.TipoVendedor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -10,28 +11,12 @@ import java.util.Objects;
 @PrimaryKeyJoinColumn(name = "idvendedor", referencedColumnName = "idpessoa")
 public class Vendedor extends Pessoa {
 
-    private static final long serialVersion = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idvendedor")
-    private Long id;
-
     @Column(name = "tipovendedor")
     private TipoVendedor tipoVendedor;
 
-
+    @Column(name = "salario")
+    private BigDecimal salario;
     public Vendedor() {
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public TipoVendedor getTipoVendedor() {
@@ -40,6 +25,14 @@ public class Vendedor extends Pessoa {
 
     public void setTipoVendedor(TipoVendedor tipoVendedor) {
         this.tipoVendedor = tipoVendedor;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public void setSalario(BigDecimal salario) {
+        this.salario = salario;
     }
 
     @Override

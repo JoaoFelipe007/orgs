@@ -18,32 +18,32 @@ public class FinanceiroResource {
     @Autowired
     private FinanceiroService service;
 
-    @ApiOperation("End point salva pessoa")
+    @ApiOperation("End point salva funcionario do financeiro")
     @PostMapping("/financeiro")
     public ResponseEntity<Object> salvar(@RequestBody Financeiro financeiro) {
         return service.salvar(financeiro);
     }
 
-    @ApiOperation("End point lista as pessoas")
+    @ApiOperation("End point lista os funcionarios do financeiro")
     @GetMapping(value = "/financeiro")
     public ResponseEntity<Object> listarTodos(){
         return service.listarTodos();
     }
 
-    @ApiOperation("End point edita pessoa")
+    @ApiOperation("End point edita funcionario do financeiro")
     @PutMapping ("/financeiro")
     public ResponseEntity<Object> editar (@RequestBody Financeiro financeiro) {
         return service.editar(financeiro);
     }
-    @ApiOperation("End point deleta pessoa")
+    @ApiOperation("End point deleta funcionario do financeiro")
     @DeleteMapping("/financeiro/{id}")
     public ResponseEntity<Object> exluir (@PathVariable(name = "id", required = true)Long id) {
         return service.excluir(id);
     }
-    @ApiOperation("End point deleta pessoa")
-    @GetMapping("/financeiro-ativos/{id}")
-    public ResponseEntity<Object> listarAtivos(@PathVariable(name = "id", required = true)Long id) {
-        return service.listarAtivos(id);
+    @ApiOperation("End point lista funcionarios do financeiro")
+    @GetMapping("/financeiro-ativos")
+    public ResponseEntity<Object> listarAtivos() {
+        return service.listarAtivos();
     }
 
 

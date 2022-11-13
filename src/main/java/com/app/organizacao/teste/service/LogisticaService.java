@@ -14,13 +14,15 @@ import java.util.Optional;
 @Service
 public class LogisticaService {
 
-    @Autowired
-    private LogisticaRepository repository;
+    private final LogisticaRepository repository;
 
+    public LogisticaService(LogisticaRepository repository) {
+        this.repository = repository;
+    }
 
     public ResponseEntity<Object> salvar(Logistica logistica) {
         try {
-            Pessoa p = repository.saveAndFlush(logistica);
+            Logistica p = repository.saveAndFlush(logistica);
             return p != null ? ResponseEntity.ok().body(logistica)
                     : (ResponseEntity<Object>) ResponseEntity.badRequest();
         } catch (Exception e) {
