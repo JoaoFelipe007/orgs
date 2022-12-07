@@ -1,9 +1,7 @@
-package com.app.organizacao.teste.Resources;
+package com.app.organizacao.teste.resources;
 
 import com.app.organizacao.teste.entity.Logistica;
-import com.app.organizacao.teste.entity.Vendedor;
 import com.app.organizacao.teste.service.LogisticaService;
-import com.app.organizacao.teste.service.VendedorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

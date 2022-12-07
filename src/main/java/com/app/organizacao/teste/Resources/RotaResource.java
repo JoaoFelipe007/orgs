@@ -1,4 +1,4 @@
-package com.app.organizacao.teste.Resources;
+package com.app.organizacao.teste.resources;
 
 import com.app.organizacao.teste.entity.Rota;
 import com.app.organizacao.teste.service.RotaService;
