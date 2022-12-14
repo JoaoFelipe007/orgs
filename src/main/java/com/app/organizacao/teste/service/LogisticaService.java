@@ -2,9 +2,7 @@ package com.app.organizacao.teste.service;
 
 import com.app.organizacao.teste.entity.Logistica;
 import com.app.organizacao.teste.entity.Pessoa;
-import com.app.organizacao.teste.entity.Vendedor;
 import com.app.organizacao.teste.repository.LogisticaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

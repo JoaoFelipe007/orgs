@@ -1,6 +1,5 @@
 package com.app.organizacao.teste.service;
 
-import com.app.organizacao.teste.entity.Login;
 import com.app.organizacao.teste.entity.Pessoa;
 import com.app.organizacao.teste.entity.Vendedor;
 import com.app.organizacao.teste.repository.LoginRepository;
@@ -9,7 +8,6 @@ import com.app.organizacao.teste.service.util.ResponseUtil;
 import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,13 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class VendedorService {
 
     private final VendedorRepository repository;
-    private final PasswordEncoder encoder;
-    private final LoginRepository loginRepository;
 
-    public VendedorService(VendedorRepository repository, PasswordEncoder encoder, LoginRepository loginRepository) {
+    public VendedorService(VendedorRepository repository) {
         this.repository = repository;
-        this.encoder = encoder;
-        this.loginRepository = loginRepository;
+
     }
 
     private boolean verify(List<String> messages, Vendedor vendedor, Boolean isUpdate) {
@@ -61,7 +56,6 @@ public class VendedorService {
         try {
             if (verify(messages, vendedor, false)) {
                 Vendedor v = repository.saveAndFlush(vendedor);
-                salvarLogin(vendedor);
                 return ResponseEntity.status(200).body(ResponseUtil.response("Vendedor salvo com sucesso", v));
             }
             return ResponseEntity.status(404).body(ResponseUtil.response(null, messages));
@@ -116,17 +110,6 @@ public class VendedorService {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e);
 
-        }
-    }
-
-    private void salvarLogin(Vendedor vendedor) {
-        try {
-            Login lg = new Login();
-            lg.setLogin(vendedor.getEmail());
-            lg.setSenha(encoder.encode(vendedor.getEmail()));
-            loginRepository.saveAndFlush(lg);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
