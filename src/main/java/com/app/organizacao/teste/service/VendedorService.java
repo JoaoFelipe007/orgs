@@ -1,5 +1,6 @@
 package com.app.organizacao.teste.service;
 
+import com.app.organizacao.teste.entity.Login;
 import com.app.organizacao.teste.entity.Pessoa;
 import com.app.organizacao.teste.entity.Vendedor;
 import com.app.organizacao.teste.repository.LoginRepository;
@@ -10,16 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class VendedorService {
 
     private final VendedorRepository repository;
+    private final LoginRepository loginRepository;
 
-    public VendedorService(VendedorRepository repository) {
+    public VendedorService(VendedorRepository repository, LoginRepository loginRepository) {
         this.repository = repository;
-
+        this.loginRepository = loginRepository;
     }
 
     private boolean verify(List<String> messages, Vendedor vendedor, Boolean isUpdate) {
@@ -45,6 +48,15 @@ public class VendedorService {
             messages.add("O salario tem que ser informado");
         }
 
+        if (vendedor.getEmail() != null) {
+            messages.add("O e-mail não pode ser nulo");
+        } else {
+            Optional<Vendedor> optional = repository.findByEmail(vendedor.getEmail());
+            if (!optional.isPresent()) {
+                messages.add("Já existe um cadastro para esse email");
+            }
+        }
+
         if (vendedor.getTipoVendedor() == null) {
             messages.add("O tipo de vendedor tem que informado");
         }
@@ -55,8 +67,9 @@ public class VendedorService {
         List<String> messages = new ArrayList<>();
         try {
             if (verify(messages, vendedor, false)) {
-                Vendedor v = repository.saveAndFlush(vendedor);
-                return ResponseEntity.status(200).body(ResponseUtil.response("Vendedor salvo com sucesso", v));
+                Vendedor result = repository.saveAndFlush(vendedor);
+                salvaLogin(result);
+                return ResponseEntity.status(200).body(ResponseUtil.response("Vendedor salvo com sucesso", result));
             }
             return ResponseEntity.status(404).body(ResponseUtil.response(null, messages));
         } catch (Exception e) {
@@ -113,4 +126,15 @@ public class VendedorService {
         }
     }
 
+    private void salvaLogin(Vendedor entity) {
+        try {
+            PasswordEncoder encoder = new BCryptPasswordEncoder();
+            Login login = new Login();
+            login.setLogin(entity.getEmail());
+            login.setSenha(encoder.encode(entity.getSenha()));
+            loginRepository.saveAndFlush(login);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

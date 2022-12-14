@@ -4,6 +4,7 @@ import com.app.organizacao.teste.entity.Vendedor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface VendedorRepository extends JpaRepository<Vendedor,Long> {
 
     @Query("select f from Vendedor f where f.ativo = true")
     List<Vendedor> listaSeForAtivo();
+
+
+    @Query("select v from Vendedor v where v.email = ?1")
+    Optional<Vendedor> findByEmail(String email);
 }
