@@ -19,4 +19,6 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
 
     @Query("select lg from Login lg where lg.login = ?1")
     Optional<Login> findByLogin (String Login);
+    
+    
 }

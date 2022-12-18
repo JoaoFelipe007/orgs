@@ -19,6 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter/*Classe que onde conseguimos realizar configurações costumizadas da segurança*/ {
 
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception { // Realiza a configuração do HttpSecurity
         http
@@ -29,10 +35,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter/*Classe que 
                 .and()
                 .csrf().disable(); //desabilta o csrf
     }
-    
-    
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsServiceImpl)
+                .passwordEncoder(passwordEncoder());
+    }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder  ();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

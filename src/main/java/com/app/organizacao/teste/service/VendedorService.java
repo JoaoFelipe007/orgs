@@ -48,11 +48,11 @@ public class VendedorService {
             messages.add("O salario tem que ser informado");
         }
 
-        if (vendedor.getEmail() != null) {
+        if (vendedor.getEmail() == null) {
             messages.add("O e-mail não pode ser nulo");
         } else {
             Optional<Vendedor> optional = repository.findByEmail(vendedor.getEmail());
-            if (!optional.isPresent()) {
+            if (optional.isPresent()) {
                 messages.add("Já existe um cadastro para esse email");
             }
         }
@@ -67,8 +67,8 @@ public class VendedorService {
         List<String> messages = new ArrayList<>();
         try {
             if (verify(messages, vendedor, false)) {
+                salvaLogin(vendedor);
                 Vendedor result = repository.saveAndFlush(vendedor);
-                salvaLogin(result);
                 return ResponseEntity.status(200).body(ResponseUtil.response("Vendedor salvo com sucesso", result));
             }
             return ResponseEntity.status(404).body(ResponseUtil.response(null, messages));
@@ -127,9 +127,9 @@ public class VendedorService {
     }
 
     private void salvaLogin(Vendedor entity) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        Login login = new Login();
         try {
-            PasswordEncoder encoder = new BCryptPasswordEncoder();
-            Login login = new Login();
             login.setLogin(entity.getEmail());
             login.setSenha(encoder.encode(entity.getSenha()));
             loginRepository.saveAndFlush(login);
